@@ -6,11 +6,114 @@
     <title>Nástěnka</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='icon' type='image/png' href='assets/favicon/favicon-32x32.png' sizes='32x32'/>
-    <link rel='icon' type='image/png' href='assets/favicon/favicon-16x16.png' sizes='16x16'/>
+    <link rel='icon' type='image/png' href='assets/favicon/favicon-32x32.png' sizes='32x32' />
+    <link rel='icon' type='image/png' href='assets/favicon/favicon-16x16.png' sizes='16x16' />
     <link href="assets/fonts.css" rel="stylesheet">
 </head>
 
 <body>
     <h1>Nástěnka</h1>
+
+    Helm:
+    <pre>
+    helm create xxx
+    helm package xxx --version yyy --app-version zzz
+    helm push xxx-yyy.tgz oci://reg.edgeclusters.com/academy
+    helm pull oci://reg.edgeclusters.com/academy/xxx --version yyy
+    helm install xxx oci://reg.edgeclusters.com/academy/xxx --version yyy
+    
+    helm repo add \
+    --username ??? \
+    --password ??? \
+    -insecure-skip-tls-verify \
+    academy \
+    https://reg.edgeclusters.com/chartrepo/academy
+    </pre>
+
+    Vault:
+    <pre>
+    Ctrl+R !!!
+
+    root token: ???
+
+    kubectl exec -ti -n vault vault-0 --kubeconfig=$HOME/.kube/xxxxx -- sh
+
+    vault login [token]
+
+    vault token create -policy=default
+
+    admin.hcl:
+    echo '
+    path "*" {
+        capabilities = ["create", "read", "update", "delete", "list"]
+    }' | vault policy write vault-admin -
+
+    user.hcl:
+
+    vault policy write vault-user - <<EOF
+    path "sys/mounts" {
+        capabilities = ["list","read"]
+    }
+    path "sec/*" {
+        capabilities = ["create", "read", "update", "delete", "list"]
+    }
+    EOF
+
+    vault token create -policy=vault-user
+    vault token create -policy=vault-admin -ttl=30m
+
+    vault token lookup
+
+    vault token capabilities sec
+    vault token capabilities sec/*
+
+    vault secrets enable -path=sec kv-v1
+    vault secrets list
+
+    vault kv put sec/my-secret a=b
+    vault kv get sec/my-secret
+
+    (secret = sada key-value párů)
+
+    # userpass 
+    vault auth enable userpass
+
+    vault write auth/userpass/users/amoravek password=vault policies=vault-admin,vault-user
+    vault read auth/userpass/users/amoravek
+    
+    vault write auth/userpass/users/someuser password=vault policies=vault-user
+
+    # pki
+    https://learn.hashicorp.com/tutorials/vault/pki-engine
+    (privátní klíče autorit nelze získat zpětně, jen při generování !!!)
+    </pre>
+
+    Kubernetes auth:
+    <pre>
+    vault secrets enable -path kube/secrets kv-v1
+    vault kv put kube/secrets/demo-secret password=QWE123#$%
+    vault kv get kube/secrets/demo-secret
+
+    (https://learn.hashicorp.com/tutorials/vault/kubernetes-sidecar)
+
+    vault auth enable kubernetes
+
+    vault write auth/kubernetes/config \
+        kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
+        token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+        kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+        issuer="https://kubernetes.default.svc.cluster.local"
+
+    echo '
+    path "kube/secrets/demo-secret" {
+        capabilities = ["read"]
+    }' | vault policy write kube-app -
+
+    vault write auth/kubernetes/role/kube-app \
+        bound_service_account_names=* \
+        bound_service_account_namespaces=* \
+        policies=kube-app \
+        ttl=30m
+    </pre>
+    
 </html>
