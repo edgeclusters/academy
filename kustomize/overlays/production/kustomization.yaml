@@ -1,0 +1,15 @@
+resources:
+- ../../base
+
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+secretGenerator:
+- name: basic-auth
+  files:
+  - secrets/auth
+
+patchesStrategicMerge:
+- ingress-patch.yaml
+
+namePrefix: production-

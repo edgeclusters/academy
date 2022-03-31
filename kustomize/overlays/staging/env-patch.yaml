@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nastenka-kustomize
+spec:
+  template:
+    spec:
+      containers:
+      - image: reg.edgeclusters.com/academy/nastenka:1.1
+        name: nastenka-kustomize
+        env:
+        - name: AAA
+          value: BBB
+        - name: CCC
+          value: DDD
+
