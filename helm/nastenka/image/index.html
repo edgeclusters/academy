@@ -20,7 +20,13 @@
     helm package xxx --version yyy --app-version zzz
     helm push xxx-yyy.tgz oci://reg.edgeclusters.com/academy
     helm pull oci://reg.edgeclusters.com/academy/xxx --version yyy
+
     helm install xxx oci://reg.edgeclusters.com/academy/xxx --version yyy
+    helm install --upgrade xxx oci://reg.edgeclusters.com/academy/xxx --version yyy
+    helm upgrade xxx oci://reg.edgeclusters.com/academy/xxx --version yyy
+
+    helm history xxx
+    helm rollback xxx &lt;revision&gt;
     
     helm repo add \
     --username ??? \
