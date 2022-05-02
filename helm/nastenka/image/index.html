@@ -56,14 +56,16 @@
 
     user.hcl:
 
-    vault policy write vault-user - <<EOF
+    echo '
     path "sys/mounts" {
         capabilities = ["list","read"]
     }
     path "sec/*" {
         capabilities = ["create", "read", "update", "delete", "list"]
     }
-    EOF
+    path "sec/my-secret" {
+        capabilities = ["create", "read", "update", "delete", "list"]
+    }' | vault policy write vault-user -
 
     vault token create -policy=vault-user
     vault token create -policy=vault-admin -ttl=30m
@@ -119,7 +121,7 @@
         bound_service_account_names=* \
         bound_service_account_namespaces=* \
         policies=kube-app \
-        ttl=30m
+        ttl=0
     </pre>
     
 </html>
