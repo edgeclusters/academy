@@ -9,7 +9,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
-matchLabels:
+    matchLabels:
       {{- include "nastenka.selectorLabels" . | nindent 6 }}
   template:
     metadata:
