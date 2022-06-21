@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 basicAuth: dXNlcjokYXByMSR3SGUzSXZMeSR6ZE0zY2dGbWliS0Z5ZVFLNjF2UEUxCg==
+
 ports:
   containerPort: 80
 

@@ -1,0 +1,6 @@
+dependencies:
+- name: service-a
+  repository: https://reg.edgeclusters.com/chartrepo/academy
+  version: 0.0.5-SNAPSHOT
+digest: sha256:362b6d65ec8d2f7c6adaf26577ce38c3de1ddb25f6bbb2d183661744542ed740
+generated: "2022-06-22T00:02:13.209381701+02:00"
