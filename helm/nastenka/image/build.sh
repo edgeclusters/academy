@@ -2,7 +2,7 @@
 
 docker buildx create --name mybuilder --driver-opt network=host --use || true
 
-IMAGE=reg.edgeclusters.com/academy/nastenka:1.1
+IMAGE=reg.edgeclusters.com/academy/nastenka:1.0
 
 docker buildx build \
 --platform=linux/amd64,linux/arm64 \
