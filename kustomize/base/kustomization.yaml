@@ -3,8 +3,8 @@ resources:
 - service.yaml
 - ingress.yaml
 
-generatorOptions:
- disableNameSuffixHash: true
+# generatorOptions:
+#  disableNameSuffixHash: true
 
 configMapGenerator:
 - name: config-files
