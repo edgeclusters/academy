@@ -1,0 +1,8 @@
+{{- if .Values.deployCm1 }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nastenka.fullname" . }}
+data:
+  neco: {{ .Values.cmData }}
+{{- end }}
