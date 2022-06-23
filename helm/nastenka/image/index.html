@@ -34,6 +34,11 @@
     -insecure-skip-tls-verify \
     academy \
     https://reg.edgeclusters.com/chartrepo/academy
+
+    helm search repo xxx
+
+    helm install myapp1 academy/nastenka --set aaa=bbb --set ccc=ddd
+    helm install myapp2 academy/nastenka --values myvalues.yaml
     </pre>
 
     Vault:
